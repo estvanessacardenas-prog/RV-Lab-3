@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Fase 2 - Celda de manufactura con primitivas</title>
+    <script src="https://cdn.jsdelivr.net/npm/aframe@1.4.1/dist/aframe-master.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+
+      <!-- ============ ASSETS ============ -->
+      <a-assets>
+        <img id="textura-piso" src="https://cdn.jsdelivr.net/gh/aframevr/assets/scenes/tron/floor.jpg">
+      </a-assets>
+
+      <!-- ============ ILUMINACIÓN ============ -->
+      <a-light type="ambient" color="#BBB"></a-light>
+      <a-light type="directional" color="#FFF" intensity="0.6" position="-1 2 1"></a-light>
+
+      <!-- ============ PISO Y ESTRUCTURA ============ -->
+      <a-plane rotation="-90 0 0" width="14" height="14" color="#5C6B73" position="0 0 -6"></a-plane>
+
+      <a-box position="-6 1.5 -10" width="0.2" height="3" depth="12" color="#3A4750"></a-box>
+      <a-box position="6 1.5 -10" width="0.2" height="3" depth="12" color="#3A4750"></a-box>
+
+      <!-- ============ BANDA TRANSPORTADORA ============ -->
+      <!-- Jerarquía: grupo "banda" contiene la estructura fija y las cajas animadas -->
+      <a-entity id="banda-transportadora" position="-2 0 -6">
+        <!-- Base / estructura de la banda -->
+        <a-box position="0 0.4 0" width="1.2" height="0.15" depth="6" color="#2E2E2E"></a-box>
+        <a-cylinder position="0 0.4 -3" radius="0.2" height="1.4" rotation="90 0 0" color="#888888"></a-cylinder>
+        <a-cylinder position="0 0.4 3" radius="0.2" height="1.4" rotation="90 0 0" color="#888888"></a-cylinder>
+
+        <!-- Caja transportada: se anima de un extremo a otro (loop) -->
+        <a-box class="caja-transportada" position="0 0.65 -3" width="0.5" height="0.5" depth="0.5" color="#D98324"
+               animation="property: position; from: 0 0.65 -3; to: 0 0.65 3; dur: 4000; easing: linear; loop: true">
+        </a-box>
+        <a-box class="caja-transportada" position="0 0.65 0" width="0.4" height="0.4" depth="0.4" color="#CC5A3C"
+               animation="property: position; from: 0 0.65 -1; to: 0 0.65 5; dur: 4000; easing: linear; loop: true; delay: 2000">
+        </a-box>
+      </a-entity>
+
+      <!-- ============ TANQUE DE ALMACENAMIENTO ============ -->
+      <a-entity id="tanque-almacenamiento" position="3 0 -9">
+        <a-cylinder position="0 1 0" radius="1" height="2" color="#3F88C5"></a-cylinder>
+        <a-cylinder position="0 2.05 0" radius="1.05" height="0.1" color="#2C6E9E"></a-cylinder>
+        <!-- Indicador de nivel (sensor) -->
+        <a-sphere class="sensor-nivel" position="1.15 1.4 0" radius="0.12" color="#5CFF5C"></a-sphere>
+      </a-entity>
+
+      <!-- ============ BRAZO ROBÓTICO BÁSICO ============ -->
+      <a-entity id="brazo-robotico" position="2.5 0 -3.5">
+        <!-- Base fija -->
+        <a-cylinder position="0 0.15 0" radius="0.4" height="0.3" color="#222831"></a-cylinder>
+
+        <!-- Eslabón 1: rota sobre el eje Y (base giratoria) -->
+        <a-entity id="eslabon-1" position="0 0.3 0"
+                  animation="property: rotation; to: 0 360 0; dur: 8000; easing: linear; loop: true">
+          <a-cylinder position="0 0.35 0" radius="0.15" height="0.7" color="#E4572E"></a-cylinder>
+
+          <!-- Eslabón 2: brazo horizontal -->
+          <a-entity id="eslabon-2" position="0 0.7 0">
+            <a-box position="0.5 0 0" width="1" height="0.15" depth="0.15" color="#F3A712"></a-box>
+            <!-- Efector final / gripper -->
+            <a-sphere position="1 0 0" radius="0.15" color="#17BEBB"></a-sphere>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <!-- ============ SENSORES ADICIONALES ============ -->
+      <a-sphere position="-2 1.2 -9.2" radius="0.1" color="#5CFF5C"></a-sphere>
+      <a-sphere position="2.5 1.4 -1" radius="0.1" color="#FF5C5C"></a-sphere>
+
+      <a-sky color="#B3C7D6"></a-sky>
+
+      <!-- Cámara con controles para navegación en escritorio / móvil -->
+      <a-entity camera look-controls wasd-controls position="0 1.6 2">
+        <a-cursor color="#FFFFFF"></a-cursor>
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>
